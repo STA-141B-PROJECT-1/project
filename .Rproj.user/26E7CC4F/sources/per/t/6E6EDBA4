@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1582823236647.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1860025107",
+    "id" : "6E6EDBA4",
+    "lastKnownWriteTime" : 1582826545,
+    "last_content_update" : 1582826545483,
+    "path" : "C:/Users/nbafl/project/.Renviron",
+    "project_path" : ".Renviron",
+    "properties" : {
+        "cursorPosition" : "1,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "sh"
+}
