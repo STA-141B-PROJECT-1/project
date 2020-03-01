@@ -35,19 +35,12 @@ nba_key
 stop_for_status(nbaApi)
 ```
 
-```{r}
-r <- GET("https://stats.nba.com/player/201935/")
-stop_for_status(r)
-json <- content(r, as = "text", encoding = "UTF-8")
-json
-fromJSON(json)$response
-http_status(r)
-```
+
 
 ```{r}
 library("ballr")
 
-NBAPerGameStatistics(season = 2020)
+playerdata <- NBAPerGameStatistics(season = 2020)
 ```
 
 

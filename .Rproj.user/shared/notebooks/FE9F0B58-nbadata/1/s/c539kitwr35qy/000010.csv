@@ -1,0 +1,7 @@
+"0","library(jsonlite)"
+"0","library(httr)"
+"0","nbaApi <- GET(""api-nba-v1.p.rapidapi.com"","
+"0","  query = list(key = Sys.getenv(""f0f72cf4a1mshda9d0bc5d47fd6dp13c50cjsn5d6698b12436""),"
+"0","               se))"
+"2","Error in named(list(...)) : object 'se' not found
+"

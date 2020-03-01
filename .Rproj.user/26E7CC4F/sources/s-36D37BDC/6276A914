@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1582846534621.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "6276A914",
+    "lastKnownWriteTime" : 1582826514,
+    "last_content_update" : 1582928724637,
+    "path" : "C:/Users/nbafl/sta141b-lectures/02-20/api.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "252,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
