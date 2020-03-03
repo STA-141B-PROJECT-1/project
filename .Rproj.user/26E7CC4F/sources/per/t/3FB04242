@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1582845755195.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2534146720",
+    "id" : "3FB04242",
+    "lastKnownWriteTime" : 1583186651,
+    "last_content_update" : 1583186651604,
+    "path" : "C:/Users/nbafl/project/nbadata.Rmd",
+    "project_path" : "nbadata.Rmd",
+    "properties" : {
+        "cursorPosition" : "39,62",
+        "last_setup_crc32" : "36D37BDCb4e743b0",
+        "scrollLine" : "27",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
