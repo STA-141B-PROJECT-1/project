@@ -41,6 +41,32 @@ playerdata %>% select(player,pos,mp,trb,ast,stl,blk,tov,pf,pts)
 playerdata[1,]
 ```
 
+```{r}
+playerdata
+temp = cbind(playerdata$fgpercent, playerdata$x3ppercent, playerdata$ftpercent)
+barplot(temp[1,], main = "Field goal, 3 point, and free throw percentage", xlab = "Shooting percenages", ylab = "Percent", names.arg = c("FG%", "3P%", "FT%"))
+```
 
+```{r}
+#ggplot not working
+library(ggplot2)
+df = data.frame(fgp = playerdata$fgpercent, threep = playerdata$x3ppercent, ftp = playerdata$ftpercent)
+plot <- ggplot(df[1,], aes(x = c(fgp[1], threep[1], ftp[1]))) +
+  geom_bar(stat = "identity")
+plot
+```
 
+```{r}
+library(plotly)
+
+fig <- plot_ly(
+  x = c("Field goal", "3 point", "Free throw"),
+  y = c(playerdata$fgpercent[1], playerdata$x3ppercent[1], playerdata$ftpercent[1]),
+  type = "bar") %>% 
+  layout(title = paste("Field goal, 3 point, and Free throw Percentage of ", playerdata$player[1]),
+         xaxis = list(title = "Shooting Percentages"),
+         yaxis = list(title = "Percent"))
+
+fig
+```
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
