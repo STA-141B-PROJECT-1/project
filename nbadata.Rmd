@@ -7,10 +7,11 @@ output: html_document
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-
+library(httr)
 library(rvest)
 library(devtools)
-usethis::edit_r_environ("project")
+library(jsonlite)
+
 ```
 
 ## Web Scrapping part
@@ -27,6 +28,16 @@ a
 ## NBA API
 Trying for the API have not gotten it yet
 
+```{r}
+r <-(" https://api-nba-v1.p.rapidapi.com/games/league/standard/2020")
+headers(r)
+httr::http_status(r)
+json <- content(r,as = "text")
+json
+a <- fromJSON(json)
+a
+a$message
+```
 
 
 
