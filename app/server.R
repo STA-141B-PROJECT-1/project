@@ -1,7 +1,5 @@
 
 
-
-
 function(input, output, session) {
   
   selectedData1 <- reactive({
@@ -19,49 +17,102 @@ function(input, output, session) {
   
   selectedData3 <- reactive({
     playerdata %>%
-      select(player,pos,mp,trb,ast,stl,blk,tov,pf,pts) %>% 
-    filter(playerdata$player == gsub("[[:space:]]*$","",gsub("- .*",'',input$player))) 
+      select(player,tm,pts,trb,ast,stl,blk,tov,pf,mp) %>% 
+      filter(playerdata$player == gsub("[[:space:]]*$","",gsub("- .*",'',input$player))) 
     
   })
   
   selectedData4 <- reactive({
-    rbind(selectedData3(),selectedData2())
+    playerdata %>%
+      select(player,fgpercent,x3ppercent,ftpercent)  %>% 
+      filter(playerdata$player == gsub("[[:space:]]*$","",gsub("- .*",'',input$player))) 
+      
+    
     
   })
   
-  selectedData5 <- selectedData3%>% select(pts,trb,ast,stl,blk,tov,pf,mp)
- 
+  selectedData5 <- reactive({
+    selectedData1%>% 
+      select(pts,trb,ast,stl,blk,tov,pf,mp)
+  })
   
+  selectedData6 <- reactive({
+    selectedData1() %>% 
+      select(fgpercent,x3ppercent,ftpercent)
+  })
+ 
+  selectedData7 <- reactive({
+    selectedData1()%>% 
+      select(player)
+  })
   
   # Combine the selected variables into a new data frame
   output$plot1 <- renderPlotly({
-    
+ 
     
     plot_ly(
-      type = 'scatterpolar',
-      mode = "closest",
-      fill = 'toself'
-    ) %>%
-      add_trace(
-        r = as.matrix(selectedData5[1,]),
-        theta = c("PPG","RPG","AST","STL","BLK","TOV","PF","MPG"),
-        showlegend = TRUE,
-        mode = "markers",
-        name = "whatever"
-      ) %>%
-      layout(
-        polar = list(
-          radialaxis = list(
-            visible = T,
-            range = c(0,100)
-          )
-        ),
-        
-        showlegend=TRUE
-        
-        
-      )
+      x = c("Field goal", "3 point", "Free throw"),
+      y = c(selectedData4()$fgpercent, selectedData4()$x3ppercent, selectedData4()$ftpercent),
+      type = "bar") %>% 
+      layout(title = paste("Shooting Percentages of ", selectedData3()[1]),
+             yaxis = list(title = "Percent"))
     
+    
+  })
+  
+
+    
+    output$plot2 <- renderPlotly({
+    if (nrow(selectedData3()) == 1)
+     plot_ly(
+       type = 'scatterpolar',
+       mode = "closest",
+       fill = 'toself'
+     ) %>%
+       add_trace(
+         r = c(selectedData3()$pts,selectedData3()$trb,selectedData3()$ast,selectedData3()$stl,selectedData3()$blk,selectedData3()$tov,selectedData3()$pf,selectedData3()$mp),
+         theta = c("PPG","RPG","AST","STL","BLK","TOV","PF","MPG"),
+         showlegend = TRUE,
+         mode = "markers",
+         name = selectedData3()[2]
+       ) %>%
+       layout(
+         polar = list(
+           radialaxis = list(
+             visible = T,
+             range = c(0,40)
+           )
+         ),
+      
+         showlegend=TRUE
+  
+     )
+    else  
+      plot_ly(
+        type = 'scatterpolar',
+        mode = "closest",
+        fill = 'toself'
+      ) %>%
+        add_trace(
+          r = c(selectedData3()$pts,selectedData3()$trb,selectedData3()$ast,selectedData3()$stl,selectedData3()$blk,selectedData3()$tov,selectedData3()$pf,selectedData3()$mp),
+          theta = c("PPG","RPG","AST","STL","BLK","TOV","PF","MPG"),
+          showlegend = TRUE,
+          mode = "markers",
+          name = selectedData3()[1,2]
+        ) %>%
+        layout(
+          polar = list(
+            radialaxis = list(
+              visible = T,
+              range = c(0,40)
+            )
+          ),
+          
+          showlegend=TRUE
+          
+        )
+      
+
   })
   
 }

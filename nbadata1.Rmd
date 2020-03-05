@@ -1,0 +1,99 @@
+---
+title: "nbastatsscrape"
+author: "John Tran"
+date: "February 26, 2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(httr)
+library(rvest)
+library(devtools)
+library(jsonlite)
+
+```
+
+## Web Scrapping part
+
+```{r cars}
+nba <-read_html("https://www.basketball-reference.com/leagues/NBA_2020_per_game.html") 
+nba_table <- html_table(nba)
+player_stats <- data.frame(nba_table)
+player_stats <- player_stats %>% mutate_at(vars(Rk,Age,G,GS,MP,FG,FGA,FG.,X3P,X3PA,X3P.,X2P,eFG.,FT,FTA,FT.,ORB,DRB,TRB,AST,STL,BLK,TOV,PF,PTS),funs(as.numeric)) %>% drop_na
+a <- player_stats %>%  group_by(PTS) %>% arrange(desc(PTS))
+a
+```
+
+## NBA API
+Got the API dont know if we are gonna use this
+
+```{r}
+
+r <- GET("https://api-nba-v1.p.rapidapi.com/players/league/standard/2019",
+         add_headers(c('x-rapidapi-host'= "api-nba-v1.p.rapidapi.com", 
+                       'x-rapidapi-key'= "f0f72cf4a1mshda9d0bc5d47fd6dp13c50cjsn5d6698b12436")))
+http_status(r)
+json <- content(r, "text", encoding = "UTF-8")
+json
+df <- fromJSON(json, simplifyMatrix = FALSE)
+df$api$players
+
+
+```
+
+
+
+
+```{r}
+
+library("ballr")
+
+playerdata <- NBAPerGameStatistics(season = 2020)
+names(playerdata)
+playerdata %>% select(player,pos,mp,trb,ast,stl,blk,tov,pf,pts)
+playerdata[1,]
+```
+
+```{r}
+playerdata
+temp = cbind(playerdata$fgpercent, playerdata$x3ppercent, playerdata$ftpercent)
+barplot(temp[1,], main = "Field goal, 3 point, and free throw percentage", xlab = "Shooting percenages", ylab = "Percent", names.arg = c("FG%", "3P%", "FT%"))
+```
+
+```{r}
+#ggplot not working
+library(ggplot2)
+df = data.frame(fgp = playerdata$fgpercent, threep = playerdata$x3ppercent, ftp = playerdata$ftpercent)
+plot <- ggplot(df[1,], aes(x = c(fgp[1], threep[1], ftp[1]))) +
+  geom_bar(stat = "identity")
+plot
+```
+
+
+
+```{r}
+a <- playerdata %>% 
+  select(player,pts,trb,ast,stl,blk,tov,pf,mp) %>% 
+  filter("Andre Drummond" == player)
+a
+```
+
+```{r}
+library(plotly)
+f <- list(
+  family = "Arial",
+  size = 12,
+  color = "#7f7f7f"
+)
+fig <- plot_ly(
+  x = c("Field goal", "3 point", "Free throw"),
+  y = c(playerdata$fgpercent[1], playerdata$x3ppercent[1], playerdata$ftpercent[1]),
+  type = "bar") %>% 
+  layout(title = paste("Field goal, 3 point, and Free throw Percentage of ", playerdata$player[1]),
+         xaxis = list(title = "Shooting Percentages"),
+         yaxis = list(title = "Percent"))
+
+fig
+```
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

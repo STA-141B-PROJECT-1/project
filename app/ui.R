@@ -1,3 +1,4 @@
+library(plotly)
 ui <- navbarPage("NBA 2019-2020 Player Radar Plot",
                  tabPanel("Graphic",fluidPage(theme = shinythemes::shinytheme("cerulean")),
                           tags$head(
@@ -14,9 +15,12 @@ ui <- navbarPage("NBA 2019-2020 Player Radar Plot",
                                          submitButton("Update filters")
                             ),
                             mainPanel(
-                              column(8, plotlyOutput("plot1", width = 800, height=700),
+                              tabsetPanel(type = "tabs",
+                                          tabPanel("stat graph",fluidRow(
+                                            column(6 ,plotlyOutput("plot2", width = 500, height=500)),
+                                            column(6,plotlyOutput("plot1",width = 500, height = 500))),
                                      p("Here's is radar plot of the stats of the selected NBA Player",
-                                       style = "font-size:25px")
+                                       style = "font-size:25px"))
                                      
                               )
                             )
