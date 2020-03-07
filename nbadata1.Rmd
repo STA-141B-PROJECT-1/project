@@ -23,6 +23,15 @@ player_stats <- data.frame(nba_table)
 player_stats <- player_stats %>% mutate_at(vars(Rk,Age,G,GS,MP,FG,FGA,FG.,X3P,X3PA,X3P.,X2P,eFG.,FT,FTA,FT.,ORB,DRB,TRB,AST,STL,BLK,TOV,PF,PTS),funs(as.numeric)) %>% drop_na
 a <- player_stats %>%  group_by(PTS) %>% arrange(desc(PTS))
 a
+
+nbaleagueavg <- read_html("https://www.basketball-reference.com/leagues/NBA_stats_per_game.html") %>% 
+  html_table %>% 
+  data.frame %>% 
+  drop_na
+names(nbaleagueavg) <- nbaleagueavg[1,]
+nbaleagueavg<-nbaleagueavg %>%  mutate_at(vars(Rk,Age,Wt,G,MP,FG,FGA,`3P`,`3PA`,FT,FTA,ORB,DRB,TRB,AST,STL,BLK,TOV,PF,PTS,`FG%`,`3P%`,`FT`,Pace,`eFG%`,`TOV%`,`ORB%`,`ORtg`),funs(as.numeric)) 
+nbaleagueavg
+
 ```
 
 ## NBA API
@@ -49,7 +58,9 @@ df$api$players
 
 library("ballr")
 
-playerdata <- NBAPerGameStatistics(season = 2020)
+playerdata <- NBAPerGameStatistics(season = 2020) 
+playerdist <- NBAPerGameStatistics(season = 2020) %>% distinct(playerdist,player,.keep_all = TRUE)
+playerdist
 names(playerdata)
 playerdata %>% select(player,pos,mp,trb,ast,stl,blk,tov,pf,pts)
 playerdata[1,]
@@ -74,9 +85,14 @@ plot
 
 ```{r}
 a <- playerdata %>% 
-  select(player,pts,trb,ast,stl,blk,tov,pf,mp) %>% 
-  filter("Andre Drummond" == player)
+  filter("TOT" == tm) %>% 
+  select(player,tm)
+
+a[1,2] = "POR-SAC"
 a
+
+
+
 ```
 
 ```{r}
@@ -88,12 +104,15 @@ f <- list(
 )
 fig <- plot_ly(
   x = c("Field goal", "3 point", "Free throw"),
-  y = c(playerdata$fgpercent[1], playerdata$x3ppercent[1], playerdata$ftpercent[1]),
+  y = a[1,],
   type = "bar") %>% 
-  layout(title = paste("Field goal, 3 point, and Free throw Percentage of ", playerdata$player[1]),
+  layout(title = paste("Field goal, 3 point, and Free throw Percentage of "),
          xaxis = list(title = "Shooting Percentages"),
          yaxis = list(title = "Percent"))
 
 fig
 ```
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+#player images api from 2017-2018
+```
