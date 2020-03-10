@@ -30,7 +30,7 @@ nbaleagueavg <- read_html("https://www.basketball-reference.com/leagues/NBA_stat
   drop_na
 names(nbaleagueavg) <- nbaleagueavg[1,]
 nbaleagueavg<-nbaleagueavg %>%  mutate_at(vars(Rk,Age,Wt,G,MP,FG,FGA,`3P`,`3PA`,FT,FTA,ORB,DRB,TRB,AST,STL,BLK,TOV,PF,PTS,`FG%`,`3P%`,`FT`,Pace,`eFG%`,`TOV%`,`ORB%`,`ORtg`),funs(as.numeric)) 
-nbaleagueavg
+nbaleagueavg <- nbaleagueavg[2,]
 
 ```
 
@@ -60,7 +60,7 @@ library("ballr")
 
 playerdata <- NBAPerGameStatistics(season = 2020) 
 playerdist <- NBAPerGameStatistics(season = 2020) %>% distinct(playerdist,player,.keep_all = TRUE)
-playerdist
+
 names(playerdata)
 playerdata %>% select(player,pos,mp,trb,ast,stl,blk,tov,pf,pts)
 playerdata[1,]
@@ -114,5 +114,68 @@ fig
 ```
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 ```{r}
-#player images api from 2017-2018
+library(httr)
+library(jsonlite)
 ```
+
+
+
+
+```{r}
+library(stringr)
+r <- GET("https://api.sportsdata.io/v3/nba/scores/json/Players?key=8d1e9146298b4771a541957a3c12409e")
+http_status(r)
+json <- content(r, "text", encoding = "UTF-8")
+active <-fromJSON(json, simplifyMatrix = FALSE)
+active <- active %>%  rename(player = YahooName)
+lol <- playerdist %>% inner_join(active)
+lol
+```
+```{r}
+lol %>%
+      select(player,PlayerID) %>% 
+      filter(playerdata$player == gsub("[[:space:]]*$","",gsub("- .*",'',input$player)))
+```
+
+```{r}
+library(tidyverse)
+library(jsonlite)
+library(httr)
+library(rvest)
+library(WikipediR)
+
+#scraping content of Wikipedia page using API
+r <- GET("https://en.wikipedia.org/w/api.php",
+          query = list(
+            action = "parse",
+            page = "Steven Adams",
+            prop = "text",
+            format = "json"
+          ))
+
+stop_for_status(r)
+      
+json <- content(r, as = "text")
+test <- fromJSON(json)
+test$parse$text$`*` %>% 
+  read_html() %>% 
+  html_text() %>%
+  str_remove_all("\n")
+
+#scraping content of Wikipedia page using WikipediaR package
+wiki = page_content(language = "en", "wikipedia", page_name = "Steven Adams")
+wiki$parse$text$'*' %>% 
+  read_html() %>% 
+  html_text() %>% 
+  str_remove_all("\n")
+external <- page_info(language = "en", "wikipedia", page = "Steven Adams")
+external$query$pages$`35795752`$canonicalurl
+```
+
+
+```{r} 
+library(WikipediR)
+
+```
+
+

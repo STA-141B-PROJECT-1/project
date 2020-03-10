@@ -1,26 +1,43 @@
 library(plotly)
+sidebarPanel2 <- function (..., out = NULL,out1 = NULL, out2 = NULL, out3 = NULL, width = 4) 
+{
+  div(class = paste0("col-sm-", width), 
+      tags$form(class = "well", ...),
+      out,
+      out1,
+      out2,
+      out3
+  )
+}
 ui <- navbarPage("NBA 2019-2020 Player Radar Plot",
                  tabPanel("Graphic",fluidPage(theme = shinythemes::shinytheme("cerulean")),
                           tags$head(
                             tags$style(HTML(".shiny-output-error-validation{color: red;}"))),
                           pageWithSidebar(
                             headerPanel('Apply filters'),
-                            sidebarPanel(width = 4,
+                            sidebarPanel2(width = 4,
                                          selectInput('player', 'Choose a player:',paste(playerdist$player,"-",playerdist$tm)),
-                                         submitButton("Update filters")
+                                         submitButton("Update filters"),
+                                         out = h3("Player Info"),
+                                         out1 = column(3,uiOutput("image",width = 500, height = 500)),
+                                          out2 =  column(5,verbatimTextOutput("name")),
+                                          out3 =  column(9,verbatimTextOutput("team")),
+                                         br(),
+                                         
                             ),
                             mainPanel(
                               tabsetPanel(type = "tabs",
                                           tabPanel("stat graph",fluidRow(
                                             column(6 ,plotlyOutput("plot2", width = 500, height=500)),
-                                            column(6,plotlyOutput("plot1",width = 500, height = 500))),
-                                     p("Here's is radar plot of the stats of the selected NBA Player",
-                                       style = "font-size:25px"))
+                                            column(6,plotlyOutput("plot1",width = 500, height = 500)))
+                                    )
                                      
                               ),
-                              tableOutput("table")
-                            )
-                          )),
+                              tableOutput("table"),
+                              
+                            ))
+                          
+                          ),
                  tabPanel("Info",p("We used a data set consisting of game statistics from 511 NBA players from basketball-reference.com. The data set
                                    was obtained from ", a("basketball reference", href="https://www.basketball-reference.com/leagues/NBA_2020_totals.html", target="_blank"),
                                    "website using webscraping. This app is an interactive tool that allows any user to choose a player from the NBA and check their stats."),

@@ -93,7 +93,7 @@ function(input, output, session) {
          polar = list(
            radialaxis = list(
              visible = T,
-             range = c(0,40)
+             range = c(0,selectedData3()$mp[1] +2)
            )
          ),
       
@@ -131,7 +131,7 @@ function(input, output, session) {
          polar = list(
            radialaxis = list(
              visible = T,
-             range = c(0,40)
+             range = c(0,selectedData3()$mp[1]+2)
            )
          ),
          
@@ -149,9 +149,30 @@ function(input, output, session) {
       selectedData6()
       
     })
-    }
-
-
-
+ 
+#UI under the sidebar panel (player info)    
+       
+     c_id <- reactive({
+       lol %>%
+         select(player,PlayerID,Team) %>% 
+         filter(lol$player == gsub("[[:space:]]*$","",gsub("- .*",'',input$player)))
+       
+     })
+     
+     c_url <- reactive({
+       paste0("https://s3-us-west-2.amazonaws.com/static.fantasydata.com/headshots/nba/low-res/", c_id()$PlayerID[1], ".png")
+     })
+     
+     output$image <- renderUI({
+       tags$img(src = c_url())
+     })
     
+  output$name <- renderText({
+     paste("Name: ",c_id()$player[1])
+  })
 
+  output$team <- renderText({
+    paste("Team :", c_id()$Team[1])
+  })
+    
+}
