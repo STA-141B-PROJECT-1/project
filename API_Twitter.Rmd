@@ -6,11 +6,16 @@ output: html_document
 ---
 
 ```{r}
-library(twitteR)
 library(tidyverse)
+library(dplyr)
 library(jsonlite)
 library(httr)
 library(rvest)
+library(ballr)
+library(rtweet)
+library(reactable)
+library(glue)
+library(twitteR)
 ```
 
 
@@ -25,14 +30,103 @@ get_twitter_api <- function(endpoint, query = NULL) {
   signature <- oauth_signature(
     endpoint, 
     app = twitter_app,
-    token = "1235684232963321856-EXcey7vfchFnRGhkbkdnA15Uq9U2WQ",
-    token_secret = Sys.getenv("1aTmg92BUknzUAr3J9DiuIvj4Bb3s6pLUlBvgl5eNKca9")
+    token = "1235684232963321856-PfqLlaJYItQNuemmg5js0U70KnMvwO",
+    token_secret = Sys.getenv("nKgo2AxF1zcHL3GNYxwWhtZoJcqlBHHDqJDsw2988vIk9")
   )
   GET(endpoint, oauth_header(signature), query = query)
 }
 
+
+
+api_keys = "tzFxaKR3QgyAqUVX8QSwgI2Xs"
+api_secret = "OcBHJF2zamPyga4h2VrZWQObD3rYKssqCN3wRdqNJOL8ySMZvq"
+token = "1235684232963321856-PfqLlaJYItQNuemmg5js0U70KnMvwO"
+token_secret = "nKgo2AxF1zcHL3GNYxwWhtZoJcqlBHHDqJDsw2988vIk9"
+
+
 ```
 
+
+```{r}
+#Functions for making URL
+make_url_html <- function(url) {
+  if(length(url) < 2) {
+    if(!is.na(url)) {
+      as.character(glue("<a title = {url} target = '_new' href = '{url}'>{url}</a>") )
+    } else {
+      ""
+    }
+  } else {
+    paste0(purrr::map_chr(url, ~ paste0("<a title = '", .x, "' target = '_new' href = '", .x, "'>", .x, "</a>", collapse = ", ")), collapse = ", ")
+  }
+}
+
+```
+
+
+
+```{r}
+#API access 
+setup_twitter_oauth(api_keys, api_secret, token, token_secret)
+
+tweets <- search_tweets("James Harden" , n = 200, include_rts = FALSE)
+
+
+
+
+tweets <- tweets %>%
+  select(user_id, status_id, created_at, screen_name, text,
+         favorite_count,retweet_count,urls_expanded_url)
+
+tweets_tb <- tweets %>%
+  select(created_at, screen_name, text, favorite_count,
+        retweet_count,urls_expanded_url ) 
+
+tweets_table <-tweets %>%
+  mutate(
+    Tweet = glue::glue("{text} <a href='https://twitter.com/{screen_name}/status/{status_id}'>>> </a>") 
+    )%>%
+  select(DateTime = created_at, User = screen_name, Tweet, Likes = favorite_count, RTs = retweet_count, URLs = urls_expanded_url)
+
+
+tweets_table$URLs <- purrr::map_chr(tweets_table$URLs, make_url_html)
+
+
+
+
+
+#In Shiny Apps, we can use the follwoing code to obtain reactable
+# library(reactable)
+# 
+# ui <- fluidPage(
+#  titlePanel("reactable example"),
+#  reactableOutput("table")
+# )
+# 
+# server <- function(input, output, session) {
+#   output$table <- renderReactable({
+#    reactable(iris)
+#  })
+# }
+
+
+
+
+reactable(tweets_table, 
+          filterable = TRUE, searchable = TRUE, bordered = TRUE, striped = TRUE, highlight = TRUE,
+          showSortable = TRUE, defaultSortOrder = "desc", defaultPageSize = 25, showPageSizeOptions = TRUE, pageSizeOptions = c(25, 50, 75, 100, 200), 
+          columns = list(
+            DateTime = colDef(defaultSortOrder = "asc"),
+            User = colDef(defaultSortOrder = "asc"),
+            Tweet = colDef(html = TRUE, minWidth = 190, resizable = TRUE),
+            Likes = colDef(filterable = FALSE, format = colFormat(separators = TRUE)),
+            RTs = colDef(filterable =  FALSE, format = colFormat(separators = TRUE)),
+            URLs = colDef(html = TRUE)
+          )
+) 
+
+
+```
 
 ```{r}
 
