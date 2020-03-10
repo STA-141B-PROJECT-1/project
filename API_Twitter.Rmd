@@ -1,0 +1,108 @@
+---
+title: "API Twitter"
+author: "Zhanglin Shangguan"
+date: "3/10/2020"
+output: html_document
+---
+
+```{r}
+library(twitteR)
+library(tidyverse)
+library(jsonlite)
+library(httr)
+library(rvest)
+```
+
+
+```{r}
+twitter_app <- oauth_app("twitter",
+  key = "tzFxaKR3QgyAqUVX8QSwgI2Xs",
+  secret = Sys.getenv("OcBHJF2zamPyga4h2VrZWQObD3rYKssqCN3wRdqNJOL8ySMZvq")
+)
+
+
+get_twitter_api <- function(endpoint, query = NULL) {
+  signature <- oauth_signature(
+    endpoint, 
+    app = twitter_app,
+    token = "1235684232963321856-EXcey7vfchFnRGhkbkdnA15Uq9U2WQ",
+    token_secret = Sys.getenv("1aTmg92BUknzUAr3J9DiuIvj4Bb3s6pLUlBvgl5eNKca9")
+  )
+  GET(endpoint, oauth_header(signature), query = query)
+}
+
+```
+
+
+```{r}
+
+
+
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+```{r}
+
+
+```
+
+
+```{r}
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+```{r}
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+```{r}
+
+
+```
