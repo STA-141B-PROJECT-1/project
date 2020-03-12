@@ -175,4 +175,32 @@ function(input, output, session) {
     paste("Team :", c_id()$Team[1])
   })
     
+twitterdata <-reactive({
+  search_tweets(input$player , n = 200, include_rts = FALSE,token = twitter_token) %>%
+    select(user_id, status_id, created_at, screen_name, text,
+           favorite_count,retweet_count,urls_expanded_url) %>%
+    select(created_at, status_id,screen_name, text, favorite_count,
+           retweet_count,urls_expanded_url )%>%
+    mutate(
+      Tweet = glue::glue("{text} <a href='https://twitter.com/{screen_name}/status/{status_id}'>>> </a>") 
+    )%>%
+    select(DateTime = created_at, User = screen_name, Tweet, Likes = favorite_count, RTs = retweet_count, URLs = urls_expanded_url) 
+  
+  
+})
+output$tweets <- renderReactable({
+  reactable(twitterdata(), 
+            filterable = TRUE, searchable = FALSE, bordered = TRUE, striped = TRUE, highlight = TRUE,
+            showSortable = TRUE, defaultSortOrder = "desc", defaultPageSize = 25, showPageSizeOptions = TRUE, pageSizeOptions = c(25, 50, 75, 100, 200),
+            columns = list(
+              DateTime = colDef(defaultSortOrder = "asc"),
+              User = colDef(defaultSortOrder = "asc"),
+              Tweet = colDef(html = TRUE, minWidth = 190, resizable = TRUE),
+              Likes = colDef(filterable = FALSE, format = colFormat(separators = TRUE)),
+              RTs = colDef(filterable =  FALSE, format = colFormat(separators = TRUE)),
+              URLs = colDef(html = TRUE)
+            )
+   ) 
+})
+
 }

@@ -20,7 +20,7 @@ ui <- navbarPage("NBA 2019-2020 Player Radar Plot",
                                          submitButton("Update filters"),
                                          out = h3("Player Info"),
                                          out1 = column(3,uiOutput("image",width = 500, height = 500)),
-                                          out2 =  column(5,verbatimTextOutput("name")),
+                                          out2 =  column(6,verbatimTextOutput("name")),
                                           out3 =  column(9,verbatimTextOutput("team")),
                                          br(),
                                          
@@ -29,10 +29,13 @@ ui <- navbarPage("NBA 2019-2020 Player Radar Plot",
                               tabsetPanel(type = "tabs",
                                           tabPanel("stat graph",fluidRow(
                                             column(6 ,plotlyOutput("plot2", width = 500, height=500)),
-                                            column(6,plotlyOutput("plot1",width = 500, height = 500)))
-                                    )
+                                            column(6,plotlyOutput("plot1",width = 500, height = 500))),
+                                          
+                                    ),
+                                    tabPanel("twitter",reactableOutput("tweets"))
                                      
                               ),
+                              
                               tableOutput("table"),
                               
                             ))

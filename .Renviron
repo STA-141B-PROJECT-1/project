@@ -1,1 +1,4 @@
-nba_key = "f0f72cf4a1mshda9d0bc5d47fd6dp13c50cjsn5d6698b12436"
+twitterkey = "axgKvS5kJgXRycQrkba4dAF43bZs2DJqqtURgNZwInJwuc0AU4"
+token = "581591154-o4RevQ6vSm4oczeftDqiKAxTpdPsKIBZ2UQ5wNaw"
+token_secret = "MCuR5DUJWyenxiFDDzn9934hELwPV9ygpNFlxNIaP6lmh"
+TWITTER_PAT=C:\Users\nbafl\Documents/.rtweet_token1.rds
