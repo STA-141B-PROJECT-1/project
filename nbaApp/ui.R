@@ -9,7 +9,7 @@ sidebarPanel2 <- function (..., out = NULL,out1 = NULL, out2 = NULL, out3 = NULL
       out3
   )
 }
-ui <- navbarPage("NBA 2019-2020 Player Radar Plot",
+ui <- navbarPage("NBA 2019-2020 Player Statistics",
                  tabPanel("Graphic",fluidPage(theme = shinythemes::shinytheme("cerulean")),
                           tags$head(
                             tags$style(HTML(".shiny-output-error-validation{color: red;}"))),
@@ -27,7 +27,7 @@ ui <- navbarPage("NBA 2019-2020 Player Radar Plot",
                             ),
                             mainPanel(
                               tabsetPanel(type = "tabs",
-                                          tabPanel("stat graph",fluidRow(
+                                          tabPanel("player statistics",fluidRow(
                                             column(6 ,plotlyOutput("plot2", width = 500, height=500)),
                                             column(6,plotlyOutput("plot1",width = 500, height = 500))),
                                           
@@ -73,6 +73,9 @@ ui <- navbarPage("NBA 2019-2020 Player Radar Plot",
 
                  
                  tabPanel("Developers",
-                          p("John Tran",style = "font-size:25px")
+                          p(a("John Tran",href= "https://github.com/STA-141B-PROJECT-1"),style = "font-size:25px"),
+                          p("Alvin Hui",style ="font-size:25px"),
+                          p("Zhanglin Shangguan",style = "font-size:25px"),
+                          p("Yiming Hong",style = "font-size:25px")
                  )
 )

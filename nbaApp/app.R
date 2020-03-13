@@ -98,7 +98,8 @@ library(shiny)
                    
                    
                    tabPanel("Developers",
-                            p("John Tran",style = "font-size:25px")
+                            p("John Tran",style = "font-size:25px"),
+                            p("Alvin Hui",style ="font-size:25px")
                    )
   )
 #SERVER

@@ -11,7 +11,9 @@ library(twitteR)
 library(ballr)
 library(stringr)
 library(shiny)
-
+library(rsconnect)
+rsconnect::setAccountInfo(name='johntran', token='FDBDCF34A221C9434755516D55DCB7AC', secret='p4vLRZgEH+31rrfY1u6bFoaygHW2WjS9QKQ+8gx+')
+rsconnect::deployApp('C:/Users/nbafl/project/nbaApp')
 #2019-2020 NBA Player Stats
 nba <-read_html("https://www.basketball-reference.com/leagues/NBA_2020_per_game.html") 
 nba_table <- html_table(nba)

@@ -18,7 +18,7 @@ function(input, output, session) {
   
   selectedData3 <- reactive({
     playerdata %>%
-      select(player,tm,pts,trb,ast,stl,blk,tov,pf,mp) %>% 
+      select(player,tm,pts,trb,ast,stl,blk,tov,pf) %>% 
       filter(playerdata$player == gsub("[[:space:]]*$","",gsub("- .*",'',input$player))) 
     
   })
@@ -34,7 +34,7 @@ function(input, output, session) {
   selectedData5 <- reactive({
     playerdata %>%
       filter(playerdata$player == gsub("[[:space:]]*$","",gsub("- .*",'',input$player))) %>% 
-      select(pts,trb,ast,stl,blk,tov,pf,mp) 
+      select(pts,trb,ast,stl,blk,tov,pf) 
       
     
   })
@@ -83,8 +83,8 @@ function(input, output, session) {
        fill = 'toself'
      ) %>%
        add_trace(
-         r = c(selectedData3()$pts,selectedData3()$trb,selectedData3()$ast,selectedData3()$stl,selectedData3()$blk,selectedData3()$tov,selectedData3()$pf,selectedData3()$mp),
-         theta = c("PPG","RPG","AST","STL","BLK","TOV","PF","MPG"),
+         r = c(selectedData3()$pts,selectedData3()$trb,selectedData3()$ast,selectedData3()$stl,selectedData3()$blk,selectedData3()$tov,selectedData3()$pf),
+         theta = c("PPG","RPG","AST","STL","BLK","TOV","PF"),
          showlegend = TRUE,
          mode = "markers",
          name = selectedData3()[1]
@@ -93,7 +93,7 @@ function(input, output, session) {
          polar = list(
            radialaxis = list(
              visible = T,
-             range = c(0,selectedData3()$mp[1] +2)
+             range = c(0,selectedData3()$pts[1] +2)
            )
          ),
       
@@ -108,21 +108,21 @@ function(input, output, session) {
      ) %>%
        add_trace(
          r = as.matrix(selectedData5()[1,]),
-         theta = c("PPG","RPG","AST","STL","BLK","TOV","PF","MPG"),
+         theta = c("PPG","RPG","AST","STL","BLK","TOV","PF"),
          showlegend = TRUE,
          mode = "markers",
          name = selectedData3()$tm[1]
        ) %>%
        add_trace(
          r = as.matrix(selectedData5()[2,]),
-         theta = c("PPG","RPG","AST","STL","BLK","TOV","PF","MPG"),
+         theta = c("PPG","RPG","AST","STL","BLK","TOV","PF"),
          showlegend = TRUE,
          mode = "markers",
          name = selectedData3()$tm[2]
        ) %>% 
        add_trace(
          r = as.matrix(selectedData5()[3,]),
-         theta = c("PPG","RPG","AST","STL","BLK","TOV","PF","MPG"),
+         theta = c("PPG","RPG","AST","STL","BLK","TOV","PF"),
          showlegend = TRUE,
          mode = "markers",
          name = selectedData3()$tm[3]
@@ -131,7 +131,7 @@ function(input, output, session) {
          polar = list(
            radialaxis = list(
              visible = T,
-             range = c(0,selectedData3()$mp[1]+2)
+             range = c(0,selectedData3()$pts[1]+2)
            )
          ),
          
