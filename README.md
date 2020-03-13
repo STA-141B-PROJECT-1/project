@@ -2,4 +2,4 @@
 
 This app consists of the traditional stat categories.
 
- https://johntran.shinyapps.io/project/
+https://johntran.shinyapps.io/nbaapp/
