@@ -176,7 +176,7 @@ function(input, output, session) {
   })
     
 twitterdata <-reactive({
-  search_tweets(input$player , n = 200, include_rts = FALSE,token = twitter_token) %>%
+  search_tweets(c_id()$player , n = 200, include_rts = FALSE,token = twitter_token) %>%
     select(user_id, status_id, created_at, screen_name, text,
            favorite_count,retweet_count,urls_expanded_url) %>%
     select(created_at, status_id,screen_name, text, favorite_count,

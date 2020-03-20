@@ -4,7 +4,7 @@ username:
 account: johntran
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
-appId: 1944575
-bundleId: 2877681
+appId: 1946560
+bundleId: 2900886
 url: https://johntran.shinyapps.io/nbaapp/
-when: 1584090735.15789
+when: 1584683983.07848

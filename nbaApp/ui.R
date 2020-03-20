@@ -1,4 +1,4 @@
-library(plotly)
+source("global.R")
 sidebarPanel2 <- function (..., out = NULL,out1 = NULL, out2 = NULL, out3 = NULL, width = 4) 
 {
   div(class = paste0("col-sm-", width), 
@@ -16,7 +16,7 @@ ui <- navbarPage("NBA 2019-2020 Player Statistics",
                           pageWithSidebar(
                             headerPanel('Apply filters'),
                             sidebarPanel2(width = 4,
-                                         selectInput('player', 'Choose a player:',paste(playerdist$player,"-",playerdist$tm)),
+                                         selectInput('player', 'Choose a player:',paste(playerdist$player,"-",playerdist$tm),selected = "Andre Drummond - TOT"),
                                          submitButton("Update filters"),
                                          out = h3("Player Info"),
                                          out1 = column(3,uiOutput("image",width = 500, height = 500)),
