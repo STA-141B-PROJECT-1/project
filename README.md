@@ -1,3 +1,5 @@
-# project
+# NBA player stats 2019-2020
 
-if yall got any apis or any website to webscrap on just let me know.
+This app consists of the traditional stat categories.
+
+https://johntran.shinyapps.io/nbaapp/
